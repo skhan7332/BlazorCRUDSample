@@ -1,0 +1,37 @@
+﻿@page  "/fetchdepartment"
+@using BlazorCrud.Shared.Model
+@inject HttpClient Http
+
+<h1>Department Data</h1>
+
+@if (departments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var department in departments)
+            {
+                <tr>
+                    <td> <a href="@($"fetchemployee/{department.Uid}")">@department.Name</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    Department[] departments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        departments = await Http.GetJsonAsync<Department[]>("/api/Department/Index");
+    }
+}

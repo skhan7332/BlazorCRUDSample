@@ -1,0 +1,53 @@
+﻿@page "/fetchemployee"
+@page "/fetchemployee/{depId}"
+@using BlazorCrud.Shared.Model
+@inject HttpClient Http
+
+<h1>Employee Data</h1>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in employees)
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>@employee.Salary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string depId { get; set; }
+
+    Employee[] employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        long dId = 0;
+        if (long.TryParse(depId, out dId) && dId > 0)
+        {
+            employees = await Http.GetJsonAsync<Employee[]>($"/api/Employee/getAllByDepartment?depId={depId}");
+        }
+        else
+        {
+            employees = await Http.GetJsonAsync<Employee[]>($"/api/Employee/getAll");
+        }
+
+    }
+
+}
