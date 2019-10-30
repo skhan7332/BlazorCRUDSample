@@ -1,4 +1,4 @@
-﻿@page  "/fetchdepartment"
+﻿@page  "/department/fetchdepartment"
 @using BlazorCrud.Shared.Model
 @inject HttpClient Http
 
@@ -20,7 +20,7 @@ else
             @foreach (var department in departments)
             {
                 <tr>
-                    <td> <a href="@($"fetchemployee/{department.Uid}")">@department.Name</a></td>
+                    <td> <a href="@($"department/editdepartment/{department.Uid}")">@department.Name</a></td>
                 </tr>
             }
         </tbody>
@@ -32,6 +32,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        departments = await Http.GetJsonAsync<Department[]>("/api/Department/Index");
+        departments = await Http.GetJsonAsync<Department[]>("/api/Department/getAll");
     }
 }

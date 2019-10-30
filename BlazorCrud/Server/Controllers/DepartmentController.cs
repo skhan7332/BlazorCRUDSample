@@ -20,10 +20,27 @@ namespace BlazorCrud.Server.Controllers
         }
 
         [HttpGet]
-        [Route("Index")]
-        public IQueryable<Department> Index()
+        [Route("getAll")]
+        public IQueryable<Department> GetDepartments()
         {
             return Context.Query<Department>();
-        }   
+        }
+
+        [HttpGet]
+        [Route("getById")]
+        public async Task<Department> GetDepartment(long id)
+        {
+            var result = await Context.FindAsync<Department>(id);
+            return result;
+        }
+
+        [HttpPut]
+        [Route("updateDepartment")]
+        public async Task<Department> UpdateDepartment(Department department)
+        {
+             Context.Update(department);
+             await Context.SaveChangesAsync();
+             return department;
+        }
     }
 }

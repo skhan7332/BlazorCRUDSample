@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorCrud.Server.DataAccess
 {
@@ -32,7 +33,7 @@ namespace BlazorCrud.Server.DataAccess
         /// <returns>A task returning an object of <typeparamref name="T"/> or null if not found.</returns>
         Task<T> FindAsync<T>(params object[] id)
             where T : class;
-
+        
         /// <summary>
         /// Asynchronously finds an entity using a custom expression.
         /// </summary>
@@ -41,5 +42,28 @@ namespace BlazorCrud.Server.DataAccess
         /// <returns>An object of type <typeparamref name="T"/> or <c>null</c>.</returns>
         Task<T> FindAsync<T>(Expression<Func<T, bool>> predicate)
             where T : class;
+
+        /// <summary>
+        /// Adds an entity to the repository.
+        /// </summary>
+        /// <typeparam name="T">Type of entity to add</typeparam>
+        /// <param name="entity">Entity to add</param>
+        /// <returns>The entity in its added state.</returns>
+        T Add<T>(T entity)
+            where T : class;
+
+        /// <summary>
+        /// Updates an entity in the repository.
+        /// </summary>
+        /// <typeparam name="T">Type of entity to update</typeparam>
+        /// <param name="entity">Entity to update</param>
+        /// <returns>The entity in its updated state.</returns>
+        T Update<T>(T entity) where T : class;
+
+        /// <summary>
+        /// Asynchronously saves changes to the repository.
+        /// </summary>
+        /// <returns>An awaitable task.</returns>
+        Task SaveChangesAsync();
     }
 }

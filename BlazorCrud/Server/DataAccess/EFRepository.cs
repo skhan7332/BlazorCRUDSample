@@ -44,6 +44,18 @@ namespace BlazorCrud.Server.DataAccess
 
         public Task<T> FindAsync<T>(Expression<Func<T, bool>> predicate) where T : class => GetSet<T>().FirstOrDefaultAsync(predicate);
 
+        public T Add<T>(T entity) where T : class => GetSet<T>().Add(entity).Entity;
+
+        public T Update<T>(T entity) where T : class
+        {
+            var existing = _db.Entry(entity);
+            existing.State = EntityState.Modified;
+            existing.CurrentValues.SetValues(entity);
+            return existing.Entity;
+        }
+
+        public Task SaveChangesAsync() => _db.SaveChangesAsync();
+
         public IQueryable<T> Query<T>() where T : class => GetSet<T>().AsQueryable();
 
         public async Task<IList<T>> QueryAsync<T>(Expression<Func<T, bool>> predicate = null) where T : class

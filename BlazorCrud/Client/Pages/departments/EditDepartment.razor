@@ -1,0 +1,23 @@
+﻿@inherits EditDepartmentBase
+@page  "/department/editdepartment/{DepartmentId}"
+
+<h1>Edit Department</h1>
+
+@if (IsShowAlert)
+{
+    <div class="alert alert-success" role="alert">
+        Updated <strong>successfully</strong>.
+    </div>
+}
+
+<div class="row">
+    <form>
+        <div class="form-group">
+            <label class="col-form-label">Department Name</label>
+            <input name="Name" class="form-control" @bind="Department.Name" />
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-block btn-success" @onclick="(() => UpdateDepartment())">Update</button>
+        </div>
+    </form>
+</div>
